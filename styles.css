@@ -1,0 +1,375 @@
+/* ============================================
+   NEON DASH — Arcade Game Stylesheet
+   ============================================ */
+
+/* ---------- Design Tokens ---------- */
+:root {
+  --bg-color: #0a0a1a;
+  --neon-cyan: #0ff;
+  --neon-magenta: #f0f;
+  --neon-yellow: #ff0;
+  --neon-green: #0f0;
+  --text-color: #e0e0ff;
+  --dim-color: #8888aa;
+
+  --glow-cyan: 0 0 10px var(--neon-cyan), 0 0 20px var(--neon-cyan), 0 0 40px var(--neon-cyan);
+  --glow-magenta: 0 0 10px var(--neon-magenta), 0 0 20px var(--neon-magenta), 0 0 40px var(--neon-magenta);
+  --glow-yellow: 0 0 10px var(--neon-yellow), 0 0 20px var(--neon-yellow), 0 0 40px var(--neon-yellow);
+}
+
+/* ---------- Reset ---------- */
+*, *::before, *::after {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+/* ---------- Body ---------- */
+body {
+  background-color: var(--bg-color);
+  margin: 0;
+  padding: 0;
+  height: 100vh;
+  overflow: hidden;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-family: 'Courier New', Courier, monospace;
+  color: var(--text-color);
+}
+
+/* ---------- Game Container & Canvas ---------- */
+#game-container {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+#game-canvas {
+  width: min(800px, 95vw);
+  height: auto;
+  aspect-ratio: 2 / 1;
+  display: block;
+  border: 2px solid var(--neon-cyan);
+  box-shadow: var(--glow-cyan);
+}
+
+/* ---------- Overlay Base ---------- */
+.overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(10, 10, 26, 0.9);
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  z-index: 10;
+}
+
+.overlay.hidden {
+  display: none !important;
+}
+
+.overlay-content {
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 0.75rem;
+  padding: 1.5rem;
+  max-width: 90vw;
+  max-height: 90vh;
+  overflow-y: auto;
+}
+
+/* ---------- Title ---------- */
+.title {
+  font-size: 2.8rem;
+  color: var(--neon-cyan);
+  text-shadow: var(--glow-cyan);
+  text-transform: uppercase;
+  letter-spacing: 0.3em;
+  font-weight: bold;
+  animation: pulse 2s ease-in-out infinite;
+}
+
+.game-over-title {
+  color: var(--neon-magenta);
+  text-shadow: var(--glow-magenta);
+}
+
+/* ---------- Subtitle & Instructions ---------- */
+.subtitle {
+  font-size: 1rem;
+  color: var(--dim-color);
+  margin-top: 0.5rem;
+  margin-bottom: 1rem;
+  letter-spacing: 0.1em;
+}
+
+.instructions {
+  text-align: center;
+  margin-top: 1.5rem;
+  line-height: 1.8;
+}
+
+.instructions p {
+  font-size: 0.95rem;
+  color: var(--text-color);
+}
+
+.hint {
+  font-style: italic;
+  color: var(--dim-color) !important;
+  font-size: 0.85rem !important;
+  margin-top: 0.5rem;
+}
+
+/* ---------- Neon Buttons ---------- */
+.neon-btn {
+  background: transparent;
+  border: 2px solid var(--neon-cyan);
+  color: var(--neon-cyan);
+  padding: 0.8rem 2.5rem;
+  font-size: 1.1rem;
+  font-family: inherit;
+  cursor: pointer;
+  text-transform: uppercase;
+  letter-spacing: 0.15em;
+  transition: all 0.2s ease;
+  margin: 0.5rem;
+}
+
+.neon-btn:hover {
+  box-shadow: var(--glow-cyan);
+  transform: scale(1.05);
+}
+
+.neon-btn:active {
+  transform: scale(0.95);
+}
+
+.neon-btn.secondary {
+  border-color: var(--neon-magenta);
+  color: var(--neon-magenta);
+}
+
+.neon-btn.secondary:hover {
+  box-shadow: var(--glow-magenta);
+}
+
+/* ---------- HUD ---------- */
+.hud {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 1rem 2rem;
+  z-index: 5;
+  background: rgba(10, 10, 26, 0.8);
+  border-bottom: 1px solid rgba(0, 255, 255, 0.2);
+  box-shadow: 0 1px 8px rgba(0, 255, 255, 0.15);
+  gap: 3rem;
+}
+
+.score-section,
+.best-section {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.score-label {
+  font-size: 0.65rem;
+  text-transform: uppercase;
+  letter-spacing: 0.15em;
+  color: var(--dim-color);
+}
+
+.score-value {
+  font-size: 2rem;
+  color: var(--neon-cyan);
+  text-shadow: var(--glow-cyan);
+  font-weight: bold;
+}
+
+.best .score-value {
+  color: var(--neon-yellow);
+  text-shadow: var(--glow-yellow);
+}
+
+.sound-btn {
+  background: transparent;
+  border: none;
+  font-size: 1.5rem;
+  cursor: pointer;
+  padding: 0.5rem;
+  transition: opacity 0.2s;
+}
+
+.sound-btn:hover {
+  opacity: 0.7;
+}
+
+/* ---------- Game Over Specifics ---------- */
+.final-score {
+  font-size: 1.5rem;
+  color: var(--text-color);
+  margin: 1rem 0;
+  text-align: center;
+}
+
+.final-score span {
+  color: var(--neon-cyan);
+  text-shadow: var(--glow-cyan);
+  font-size: 1.8rem;
+  font-weight: bold;
+}
+
+.best-score-msg {
+  font-size: 1rem;
+  color: var(--neon-green);
+  margin-bottom: 1rem;
+  text-align: center;
+}
+
+/* ---------- Animations ---------- */
+@keyframes pulse {
+  0%, 100% {
+    text-shadow: var(--glow-cyan);
+    opacity: 1;
+  }
+  50% {
+    text-shadow: 0 0 5px var(--neon-cyan), 0 0 10px var(--neon-cyan);
+    opacity: 0.85;
+  }
+}
+
+@keyframes pulse-magenta {
+  0%, 100% {
+    text-shadow: var(--glow-magenta);
+    opacity: 1;
+  }
+  50% {
+    text-shadow: 0 0 5px var(--neon-magenta), 0 0 10px var(--neon-magenta);
+    opacity: 0.85;
+  }
+}
+
+.game-over-title {
+  animation: pulse-magenta 2s ease-in-out infinite;
+}
+
+/* ---------- Utility ---------- */
+.hidden {
+  display: none !important;
+}
+
+/* ---------- Responsive ---------- */
+@media (max-width: 600px) {
+  .title {
+    font-size: 1.5rem;
+    letter-spacing: 0.15em;
+  }
+
+  .subtitle {
+    font-size: 0.85rem;
+  }
+
+  .instructions {
+    margin-top: 1rem;
+    line-height: 1.6;
+    text-align: center;
+  }
+
+  .instructions p {
+    font-size: 0.8rem;
+  }
+
+  .hint {
+    font-size: 0.7rem !important;
+  }
+
+  .neon-btn {
+    padding: 0.6rem 1.8rem;
+    font-size: 0.95rem;
+  }
+
+  .overlay-content {
+    padding: 1rem;
+  }
+
+  .hud {
+    padding: 0.6rem 1rem;
+  }
+
+  .score-value {
+    font-size: 1.4rem;
+  }
+
+  .final-score {
+    font-size: 1.1rem;
+  }
+
+  .final-score span {
+    font-size: 1.3rem;
+  }
+
+  .best-score-msg {
+    font-size: 0.85rem;
+  }
+}
+
+/* ---------- Difficulty Selector ---------- */
+.difficulty-selector {
+  margin-top: 1rem;
+  margin-bottom: 1rem;
+  text-align: center;
+}
+
+.difficulty-selector label {
+  display: block;
+  font-size: 0.7rem;
+  text-transform: uppercase;
+  letter-spacing: 0.2em;
+  color: var(--dim-color);
+  margin-bottom: 0.5rem;
+}
+
+#difficulty-select {
+  appearance: none;
+  -webkit-appearance: none;
+  background: transparent;
+  border: 2px solid var(--neon-cyan);
+  color: var(--neon-cyan);
+  padding: 0.5rem 1.5rem;
+  font-size: 0.95rem;
+  font-family: inherit;
+  cursor: pointer;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  transition: all 0.2s ease;
+  outline: none;
+  border-radius: 0;
+}
+
+#difficulty-select:hover {
+  box-shadow: var(--glow-cyan);
+}
+
+#difficulty-select:focus {
+  box-shadow: var(--glow-cyan);
+}
+
+#difficulty-select option {
+  background: var(--bg-color);
+  color: var(--neon-cyan);
+  padding: 0.5rem;
+}

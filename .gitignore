@@ -1,0 +1,42 @@
+# ===========================================
+# Neon Dash — .gitignore
+# ===========================================
+
+# --- Dependencies ---
+node_modules/
+
+# --- Build Outputs ---
+dist/
+build/
+.output/
+
+# --- Environment ---
+.env
+*.local
+
+# --- Logs ---
+*.log
+
+# --- Images / Screenshots ---
+*.png
+*.jpg
+*.gif
+*.webp
+
+# --- Screenshot Folder ---
+tmp/
+
+# --- Test Coverage ---
+coverage/
+
+# --- Editor Swap Files ---
+*.swp
+*.swo
+*~
+
+# --- OS Artifacts ---
+.DS_Store
+Thumbs.db
+
+# --- Planning Artifacts (Sisyphus) ---
+.sisyphus/

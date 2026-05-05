@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>NEON DASH</title>
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+  <canvas id="game-canvas"></canvas>
+
+  <div id="overlay" class="overlay">
+    <h1 class="title">NEON DASH</h1>
+    <p class="subtitle">One button. No mercy.</p>
+    <div class="difficulty-selector">
+      <label for="difficulty-select">DIFFICULTY</label>
+      <select id="difficulty-select">
+        <option value="1.0">1.0 — Easy</option>
+        <option value="1.4">1.4 — Medium</option>
+        <option value="1.8">1.8 — Hard</option>
+      </select>
+    </div>
+    <div class="instructions">
+      <p>SPACE / CLICK / TAP to jump</p>
+      <p class="hint">Speed increases over time. Good luck.</p>
+    </div>
+    <button id="start-btn" class="neon-btn">START</button>
+  </div>
+
+  <div id="hud" class="hud">
+    <span id="score-display">0</span>
+    <span id="best-score-display">0</span>
+    <button id="sound-toggle" class="sound-btn" title="Toggle Sound">🔊</button>
+  </div>
+
+  <div id="game-over-overlay" class="overlay hidden">
+    <h1 class="title game-over-title">GAME OVER</h1>
+    <p class="final-score">Score: <span id="final-score">0</span></p>
+    <p class="best-score-msg" id="best-score-msg"></p>
+    <button id="restart-btn" class="neon-btn">RETRY</button>
+    <button id="menu-btn" class="neon-btn secondary">MENU</button>
+  </div>
+
+  <script src="game.js"></script>
+</body>
+</html>
