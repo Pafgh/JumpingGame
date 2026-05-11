@@ -180,7 +180,8 @@ body {
 }
 
 .score-section,
-.best-section {
+.best-section,
+.speed-section {
   display: flex;
   flex-direction: column;
   align-items: center;

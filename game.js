@@ -53,6 +53,7 @@ const hud = document.getElementById('hud');
 const gameOverOverlay = document.getElementById('game-over-overlay');
 const scoreDisplay = document.getElementById('score-display');
 const bestScoreDisplay = document.getElementById('best-score-display');
+const speedDisplay = document.getElementById('speed-display');
 const soundToggleBtn = document.getElementById('sound-toggle');
 const startBtn = document.getElementById('start-btn');
 const restartBtn = document.getElementById('restart-btn');
@@ -562,6 +563,8 @@ function startGame() {
 function updateHUD() {
   scoreDisplay.textContent = state.score;
   bestScoreDisplay.textContent = state.bestScore;
+  const effectiveSpeed = (state.speed * state.difficultyMultiplier).toFixed(1);
+  speedDisplay.textContent = effectiveSpeed;
 }
 
 function showInstructions() {
