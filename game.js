@@ -68,6 +68,8 @@ class AudioEngine {
     this.ctx = null;
     this.muted = false;
     this.masterGain = null;
+    this.musicPlaying = false;
+    this.musicNodes = [];
   }
 
   init() {
@@ -123,6 +125,81 @@ class AudioEngine {
     gain.connect(this.masterGain);
     osc.start();
     osc.stop(this.ctx.currentTime + 0.3);
+  }
+
+  startMusic() {
+    if (!this.ctx || this.muted || this.musicPlaying) return;
+    this.musicPlaying = true;
+
+    const bpm = 140;
+    const beatDur = 60 / bpm;
+    const eighth = beatDur / 2;
+
+    // A-minor-pentatonic melody (16 eighth-notes, 2 phrases)
+    const melody = [
+      440, 523, 587, 660, 587, 523, 440, 392,
+      440, 523, 587, 660, 587, 523, 440, 440
+    ];
+
+    // Bass: one note per 2 eighth-notes (8 entries)
+    const bass = [220, 220, 262, 262, 294, 294, 330, 330];
+
+    const SCHEDULE_LOOKAHEAD = 0.1; // seconds
+    let nextTime = this.ctx.currentTime;
+    let idx = 0;
+    let bassIdx = 0;
+
+    const tick = () => {
+      while (nextTime < this.ctx.currentTime + SCHEDULE_LOOKAHEAD) {
+        // melody voice
+        const mOsc = this.ctx.createOscillator();
+        const mGain = this.ctx.createGain();
+        mOsc.type = 'square';
+        mOsc.frequency.value = melody[idx % melody.length];
+        mGain.gain.setValueAtTime(0.1, nextTime);
+        mGain.gain.exponentialRampToValueAtTime(0.01, nextTime + eighth * 0.85);
+        mOsc.connect(mGain);
+        mGain.connect(this.masterGain);
+        mOsc.start(nextTime);
+        mOsc.stop(nextTime + eighth);
+        this.musicNodes.push(mOsc);
+
+        // bass voice (every 2 eighth-notes)
+        if (idx % 2 === 0) {
+          const bOsc = this.ctx.createOscillator();
+          const bGain = this.ctx.createGain();
+          bOsc.type = 'square';
+          bOsc.frequency.value = bass[bassIdx % bass.length];
+          bGain.gain.setValueAtTime(0.08, nextTime);
+          bGain.gain.exponentialRampToValueAtTime(0.01, nextTime + eighth * 1.9);
+          bOsc.connect(bGain);
+          bGain.connect(this.masterGain);
+          bOsc.start(nextTime);
+          bOsc.stop(nextTime + eighth * 2);
+          this.musicNodes.push(bOsc);
+          bassIdx++;
+        }
+
+        nextTime += eighth;
+        idx++;
+      }
+
+      if (this.musicPlaying) {
+        setTimeout(tick, 25);
+      }
+    };
+
+    tick();
+  }
+
+  stopMusic() {
+    if (!this.musicPlaying) return;
+    this.musicPlaying = false;
+    this.musicNodes.forEach(n => {
+      try { n.stop(); } catch (_) {}
+      try { n.disconnect(); } catch (_) {}
+    });
+    this.musicNodes = [];
   }
 
   toggle() {
