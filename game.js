@@ -556,6 +556,7 @@ function startGame() {
   // Start loop
   if (animFrameId) cancelAnimationFrame(animFrameId);
   render();
+  audio.startMusic();
 }
 
 function updateHUD() {
@@ -568,6 +569,7 @@ function showInstructions() {
   overlay.classList.remove('hidden');
   gameOverOverlay.classList.add('hidden');
   hud.style.display = 'none';
+  audio.stopMusic();
 }
 
 function gameOver() {
@@ -587,6 +589,7 @@ function gameOver() {
 
   // Effects
   audio.playDeath();
+  audio.stopMusic();
   spawnParticles(player.x + player.width / 2, player.y + player.height / 2, CONFIG.OBSTACLE_COLOR, CONFIG.PARTICLE_COUNT);
   state.shakeTimer = 20;
   state.shakeIntensity = 8;
