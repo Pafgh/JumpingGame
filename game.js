@@ -478,7 +478,7 @@ function init() {
     startGame();
   });
 
-  restartBtn.addEventListener('click', () => startGame());
+  restartBtn.addEventListener('click', () => { audio.init(); startGame(); });
   menuBtn.addEventListener('click', () => showInstructions());
 
   soundToggleBtn.addEventListener('click', () => {
