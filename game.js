@@ -232,7 +232,7 @@ class Player {
   }
 
   dash() {
-    if (this.dashCount <= CONFIG.MAX_DASHES_AIRBORNE) {
+    if (this.dashCount < CONFIG.MAX_DASHES_AIRBORNE) {
       this.vy = CONFIG.DASH_FORCE;
       this.grounded = false;
       this.dashCount++;
@@ -478,7 +478,7 @@ function init() {
     startGame();
   });
 
-  restartBtn.addEventListener('click', () => startGame());
+  restartBtn.addEventListener('click', () => { audio.init(); startGame(); });
   menuBtn.addEventListener('click', () => showInstructions());
 
   soundToggleBtn.addEventListener('click', () => {
