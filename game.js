@@ -515,11 +515,12 @@ function init() {
 
   // Load player sprites
   const walkImg = new Image();
+  walkImg.onload = () => player.setSprites(walkImg, jumpImg);
   walkImg.src = 'img/1.AM pixelart walk ChatGPT Image 15 may 2026, 18_25_03.png';
   const jumpImg = new Image();
-  jumpImg.src = 'img/2.AM pixelart jump ChatGPT Image 15 may 2026, 18_25_09.png';
-  walkImg.onload = () => player.setSprites(walkImg, jumpImg);
   jumpImg.onload = () => player.setSprites(walkImg, jumpImg);
+  jumpImg.src = 'img/2.AM pixelart jump ChatGPT Image 15 may 2026, 18_25_09.png';
+  jumpImg.src = 'img/2.AM pixelart jump ChatGPT Image 15 may 2026, 18_25_09.png';
 
   // Event listeners
   startBtn.addEventListener('click', () => {
