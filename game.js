@@ -543,6 +543,16 @@ function handleKeyDown(e) {
       spawnParticles(player.x + player.width / 2, player.y + player.height, CONFIG.PLAYER_COLOR, 5);
     }
   }
+  if (e.code === 'KeyP' || e.code === 'Escape') {
+    e.preventDefault();
+    if (state.screen === 'playing') {
+      state.screen = 'paused';
+      audio.stopMusic();
+    } else if (state.screen === 'paused') {
+      state.screen = 'playing';
+      audio.startMusic();
+    }
+  }
 }
 
 function handleCanvasClick(e) {
@@ -733,6 +743,24 @@ function draw() {
 
   // Particles
   drawParticles(ctx);
+
+  // Pause overlay
+  if (state.screen === 'paused') {
+    ctx.save();
+    ctx.fillStyle = 'rgba(10, 10, 26, 0.5)';
+    ctx.fillRect(0, 0, CONFIG.CANVAS_WIDTH, CONFIG.CANVAS_HEIGHT);
+    ctx.font = 'bold 48px "Courier New", Courier, monospace';
+    ctx.fillStyle = CONFIG.PLAYER_COLOR;
+    ctx.textAlign = 'center';
+    ctx.textBaseline = 'middle';
+    ctx.shadowColor = CONFIG.PLAYER_COLOR;
+    ctx.shadowBlur = 20;
+    ctx.fillText('PAUSED', CONFIG.CANVAS_WIDTH / 2, CONFIG.CANVAS_HEIGHT / 2);
+    ctx.shadowBlur = 0;
+    ctx.textAlign = 'start';
+    ctx.textBaseline = 'alphabetic';
+    ctx.restore();
+  }
 
   ctx.restore();
 }

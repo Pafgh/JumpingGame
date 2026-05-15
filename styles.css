@@ -374,3 +374,12 @@ body {
   color: var(--neon-cyan);
   padding: 0.5rem;
 }
+
+/* ---------- Pause Overlay Text ---------- */
+.paused-text {
+  font-size: 2.8rem;
+  color: var(--neon-cyan);
+  text-shadow: var(--glow-cyan);
+  font-weight: bold;
+  letter-spacing: 0.3em;
+}
