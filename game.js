@@ -8,7 +8,7 @@
 const CONFIG = {
   CANVAS_WIDTH: 800,
   CANVAS_HEIGHT: 400,
-  PLAYER_SIZE: 24,
+  PLAYER_SIZE: 48,
   PLAYER_COLOR: '#0ff',
   OBSTACLE_COLOR: '#f0f',
   PARTICLE_COUNT: 15,
@@ -515,10 +515,10 @@ function init() {
 
   // Load player sprites
   const walkImg = new Image();
-  walkImg.onload = () => player.setSprites(walkImg, jumpImg);
-  walkImg.src = 'img/1.AM pixelart walk ChatGPT Image 15 may 2026, 18_25_03.png';
   const jumpImg = new Image();
+  walkImg.onload = () => player.setSprites(walkImg, jumpImg);
   jumpImg.onload = () => player.setSprites(walkImg, jumpImg);
+  walkImg.src = 'img/1.AM pixelart walk ChatGPT Image 15 may 2026, 18_25_03.png';
   jumpImg.src = 'img/2.AM pixelart jump ChatGPT Image 15 may 2026, 18_25_09.png';
   jumpImg.src = 'img/2.AM pixelart jump ChatGPT Image 15 may 2026, 18_25_09.png';
 
