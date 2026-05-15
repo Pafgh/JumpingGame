@@ -93,7 +93,7 @@ This project uses manual browser testing. There are no automated tests.
 
 ### Key Files
 
-- **`game.js`** — Full game engine (720 lines). Organized into sections A through I:
+- **`game.js`** — Full game engine (775 lines). Organized into sections A through I:
   - A: Constants (`CONFIG` object)
   - B: State management
   - C: DOM references
@@ -104,7 +104,7 @@ This project uses manual browser testing. There are no automated tests.
   - H: Background renderer
   - I: Game loop (`update` → `draw` → `requestAnimationFrame`)
 
-- **`styles.css`** — Theme and layout (376 lines). Uses CSS custom properties in `:root` for colors and glow effects.
+- **`styles.css`** — Theme and layout (385 lines). Uses CSS custom properties in `:root` for colors and glow effects.
 
 - **`index.html`** — Page structure (50 lines). Canvas + overlays (instructions, HUD, game over).
 
