@@ -231,6 +231,13 @@ class Player {
     this.grounded = true;
     this.dashCount = 0;
     this.trail = [];
+    this.walkSprite = null;
+    this.jumpSprite = null;
+  }
+
+  setSprites(walk, jump) {
+    this.walkSprite = walk;
+    this.jumpSprite = jump;
   }
 
   dash() {
@@ -265,23 +272,39 @@ class Player {
     for (let i = 1; i < this.trail.length; i++) {
       const alpha = 1 - (i / this.trail.length);
       ctx.globalAlpha = alpha * 0.3;
-      ctx.fillStyle = CONFIG.PLAYER_COLOR;
-      ctx.shadowColor = CONFIG.PLAYER_COLOR;
-      ctx.shadowBlur = 10;
-      ctx.fillRect(this.trail[i].x, this.trail[i].y, this.width, this.height);
+      
+      if (this.walkSprite && this.jumpSprite) {
+        // Draw trail as faded sprite copies
+        ctx.shadowBlur = 0;
+        const sprite = this.grounded ? this.walkSprite : this.jumpSprite;
+        ctx.drawImage(sprite, this.trail[i].x, this.trail[i].y, this.width, this.height);
+      } else {
+        // Fallback: colored rectangle trail
+        ctx.fillStyle = CONFIG.PLAYER_COLOR;
+        ctx.shadowColor = CONFIG.PLAYER_COLOR;
+        ctx.shadowBlur = 10;
+        ctx.fillRect(this.trail[i].x, this.trail[i].y, this.width, this.height);
+      }
     }
 
     // Draw player
     ctx.globalAlpha = 1;
-    ctx.shadowColor = CONFIG.PLAYER_COLOR;
-    ctx.shadowBlur = 20;
-    ctx.fillStyle = CONFIG.PLAYER_COLOR;
-    ctx.fillRect(this.x, this.y, this.width, this.height);
-
-    // Inner bright core
-    ctx.shadowBlur = 0;
-    ctx.fillStyle = '#fff';
-    ctx.fillRect(this.x + 6, this.y + 6, this.width - 12, this.height - 12);
+    
+    if (this.walkSprite && this.jumpSprite) {
+      // Use sprite
+      ctx.shadowBlur = 0; // Remove glow for sprites
+      const sprite = this.grounded ? this.walkSprite : this.jumpSprite;
+      ctx.drawImage(sprite, this.x, this.y, this.width, this.height);
+    } else {
+      // Fallback: colored rectangle while images load
+      ctx.shadowColor = CONFIG.PLAYER_COLOR;
+      ctx.shadowBlur = 20;
+      ctx.fillStyle = CONFIG.PLAYER_COLOR;
+      ctx.fillRect(this.x, this.y, this.width, this.height);
+      ctx.shadowBlur = 0;
+      ctx.fillStyle = '#fff';
+      ctx.fillRect(this.x + 6, this.y + 6, this.width - 12, this.height - 12);
+    }
   }
 
   getBounds() {
@@ -489,6 +512,14 @@ function init() {
 
   // Init audio
   audio = new AudioEngine();
+
+  // Load player sprites
+  const walkImg = new Image();
+  walkImg.src = 'img/1.AM pixelart walk ChatGPT Image 15 may 2026, 18_25_03.png';
+  const jumpImg = new Image();
+  jumpImg.src = 'img/2.AM pixelart jump ChatGPT Image 15 may 2026, 18_25_09.png';
+  walkImg.onload = () => player.setSprites(walkImg, jumpImg);
+  jumpImg.onload = () => player.setSprites(walkImg, jumpImg);
 
   // Event listeners
   startBtn.addEventListener('click', () => {
