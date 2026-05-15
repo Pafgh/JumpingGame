@@ -110,10 +110,10 @@ This project uses manual browser testing. There are no automated tests.
 
 ### Extending the Game
 
-- **Add obstacle types**: Modify `spawnObstacle()` in `game.js:327-354`. Change the probability thresholds.
+- **Add obstacle types**: Modify `spawnObstacle()` in `game.js:329-356`. Change the probability thresholds.
 - **Change colors**: Edit CSS custom properties in `:root` (styles.css:6-18) and `CONFIG.PLAYER_COLOR` / `CONFIG.OBSTACLE_COLOR` (game.js:12-13).
 - **Adjust difficulty**: Modify `CONFIG.INITIAL_SPEED`, `CONFIG.SPEED_INCREMENT`, or `CONFIG.SPEED_INTERVAL`.
-- **Add sound effects**: Extend `AudioEngine` class (game.js:67-213) with new oscillator methods.
+- **Add sound effects**: Extend `AudioEngine` class (game.js:67-215) with new oscillator methods.
 
 ### Common Pitfalls
 
