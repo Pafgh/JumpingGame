@@ -71,6 +71,7 @@ class AudioEngine {
     this.masterGain = null;
     this.musicPlaying = false;
     this.musicNodes = [];
+    this.musicTimeoutId = null;
   }
 
   init() {
@@ -186,7 +187,7 @@ class AudioEngine {
       }
 
       if (this.musicPlaying) {
-        setTimeout(tick, 25);
+        this.musicTimeoutId = setTimeout(tick, 25);
       }
     };
 
@@ -195,6 +196,7 @@ class AudioEngine {
 
   stopMusic() {
     if (!this.musicPlaying) return;
+    if (this.musicTimeoutId) { clearTimeout(this.musicTimeoutId); this.musicTimeoutId = null; }
     this.musicPlaying = false;
     this.musicNodes.forEach(n => {
       try { n.stop(); } catch (_) {}
@@ -400,11 +402,15 @@ function spawnParticles(x, y, color, count) {
 
 function updateParticles() {
   particles = particles.filter(p => p.life > 0);
-  particles.forEach(p => p.update());
+  for (let i = 0; i < particles.length; i++) {
+    particles[i].update();
+  }
 }
 
 function drawParticles(ctx) {
-  particles.forEach(p => p.draw(ctx));
+  for (let i = 0; i < particles.length; i++) {
+    particles[i].draw(ctx);
+  }
 }
 
 // -----------------------------------------------------------
@@ -464,6 +470,18 @@ let audio;
 let animFrameId;
 let scoreCooldown = 0;
 
+function handleVisibilityChange() {
+  if (document.visibilityState !== 'visible') return;
+  if (!audio || !audio.ctx) return;
+  if (audio.ctx.state === 'closed') return;
+
+  try { audio.ctx.resume(); } catch (_) {}
+
+  if (state.screen === 'playing') {
+    audio.startMusic();
+  }
+}
+
 function init() {
   // Load best score
   state.bestScore = parseInt(localStorage.getItem('neondash_best') || '0', 10);
@@ -505,6 +523,12 @@ function init() {
   document.getElementById('difficulty-select').addEventListener('change', (e) => {
     localStorage.setItem(CONFIG.DIFFICULTY_MULTIPLIER_KEY, e.target.value);
   });
+
+  // Resume audio when tab becomes visible again
+  document.addEventListener('visibilitychange', handleVisibilityChange);
+
+  // Cleanup music scheduler on page unload
+  window.addEventListener('beforeunload', () => { if (audio) audio.stopMusic(); });
 
   // Initial render
   drawBackground(ctx);
@@ -638,7 +662,8 @@ function update() {
   }
 
   // Update obstacles
-  obstacles.forEach(obs => {
+  for (let i = 0; i < obstacles.length; i++) {
+    const obs = obstacles[i];
     obs.update(effectiveSpeed);
 
     // Score when passed
@@ -666,7 +691,7 @@ function update() {
     if (rectsOverlap(playerBounds, obsBounds)) {
       gameOver();
     }
-  });
+  }
 
   // Remove off-screen obstacles
   obstacles = obstacles.filter(obs => !obs.isOffScreen());
@@ -702,7 +727,9 @@ function draw() {
   }
 
   // Obstacles
-  obstacles.forEach(obs => obs.draw(ctx));
+  for (let i = 0; i < obstacles.length; i++) {
+    obstacles[i].draw(ctx);
+  }
 
   // Particles
   drawParticles(ctx);
